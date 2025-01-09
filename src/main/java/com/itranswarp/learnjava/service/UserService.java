@@ -1,15 +1,21 @@
 package com.itranswarp.learnjava.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@PropertySource("classpath:application-prod.properties")
 public class UserService {
   @Autowired
   private MailService mailService;
+
+  @Value("${name}")
+  private String name;
 
   public void setMailService(MailService mailService) {
     this.mailService = mailService;
@@ -20,6 +26,7 @@ public class UserService {
       new User(3, "tom@example.com", "password", "Tom")
   ));
 
+  @Logging("login")
   public User login(String email, String password) {
     for (User user: users) {
       if (user.getEmail().equalsIgnoreCase(email) && user.getPassword().equals(password)) {
@@ -42,5 +49,13 @@ public class UserService {
     users.add(user);
     mailService.sendRegistrationMail(user);
     return user;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 }
