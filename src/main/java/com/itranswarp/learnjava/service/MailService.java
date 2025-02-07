@@ -1,25 +1,12 @@
 package com.itranswarp.learnjava.service;
-
 import org.springframework.stereotype.Component;
-
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Component
 public class MailService {
-  private ZoneId zoneId = ZoneId.systemDefault();
-
-  public void setZoneId(ZoneId zoneId) {
-    this.zoneId = zoneId;
+  public void sendLoginEmail(User user) {
+    System.out.printf("mail to %s's email: %s, logined\n", user.getName(), user.getEmail());
   }
-  public String getTime() {
-    return ZonedDateTime.now(this.zoneId).format(DateTimeFormatter.ISO_ZONED_DATE_TIME);
-  }
-  public void sendLoginMail(User user) {
-    System.err.printf("Hi, %s! You are logged in at %s%n", user.getName(), getTime());
-  }
-  public void sendRegistrationMail(User user) {
-    System.err.println(String.format("Welcome, %s", user.getName()));
+  public void sendRegisterEmail (User user) {
+    System.out.printf("mail to %s's email: %s, register\n", user.getName(), user.getEmail());
   }
 }
