@@ -16,23 +16,20 @@ import java.util.Scanner;
 @ComponentScan(basePackages = "com.itranswarp.learnjava.service")
 @EnableAspectJAutoProxy
 public class Main {
-  public static void main(String[] args) {
-    try {
-      DatabaseInitializer.startDB();
-    } catch (IOException | ServerAcl.AclFormatException e) {
-      throw new RuntimeException("Start DB, " + e.getMessage());
+    public static void main(String[] args) {
+        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Main.class);
+             Scanner scanner = new Scanner(System.in)) {
+            
+            // 等待数据库就绪事件
+            context.addApplicationListener((org.springframework.context.ApplicationEvent event) -> {
+                if (event.getClass().getSimpleName().equals("DatabaseReadyEvent")) {
+                    UserService userService = context.getBean(UserService.class);
+                    userService.login("anna", "password");
+                    System.out.println("应用程序已启动，按回车键退出...");
+                }
+            });
+
+            scanner.nextLine();
+        }
     }
-
-
-    AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Main.class);
-    UserService userService = context.getBean(UserService.class);
-
-    userService.register("anna", "anna@example.com", "password");
-    userService.register("bob", "bob@example.com", "password");
-    userService.register("alice", "alice@example.com", "password");
-    userService.login("anna", "password");
-
-    Scanner scanner = new Scanner(System.in);
-    scanner.nextInt();
-  }
 }
