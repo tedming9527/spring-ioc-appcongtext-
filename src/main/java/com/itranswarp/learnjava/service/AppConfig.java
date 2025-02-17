@@ -5,9 +5,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Component;
@@ -36,9 +34,6 @@ public class AppConfig {
 
     // 设置数据库驱动和 URL（内存模式）
     hikariConfig.setDriverClassName("org.hsqldb.jdbc.JDBCDriver");
-    // hikariConfig.setJdbcUrl("jdbc:hsqldb:mem:testdb");  // 内存模式的数据库 URL
-    // hikariConfig.setUsername("sa");                      // 用户名
-    // hikariConfig.setPassword("");
     hikariConfig.setJdbcUrl(jdbcUrl);  // 内存模式的数据库 URL
     hikariConfig.setUsername(jdbcUsername);                      // 用户名
     hikariConfig.setPassword(jdbcPassword);
@@ -49,7 +44,7 @@ public class AppConfig {
   }
 
   @Bean
-  NamedParameterJdbcTemplate createJdbcTemplate(@Autowired DataSource dataSource) {
+  NamedParameterJdbcTemplate createNamedParameterJdbcTemplate(@Autowired DataSource dataSource) {
     return new NamedParameterJdbcTemplate(dataSource);
   }
   @Bean
