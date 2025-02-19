@@ -1,15 +1,8 @@
-import com.itranswarp.learnjava.service.DatabaseInitializer;
-import com.itranswarp.learnjava.service.User;
 import com.itranswarp.learnjava.service.UserService;
-import org.hsqldb.server.ServerAcl;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-
-import java.io.IOException;
-import java.util.List;
 import java.util.Scanner;
 
 @Configuration
@@ -17,9 +10,11 @@ import java.util.Scanner;
 @EnableAspectJAutoProxy
 public class Main {
     public static void main(String[] args) {
+        System.out.println("应用程序已启动,main执行...");
         try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Main.class);
              Scanner scanner = new Scanner(System.in)) {
-            
+
+            System.out.println("应用程序已启动, 开始注册事件...");
             // 等待数据库就绪事件
             context.addApplicationListener((org.springframework.context.ApplicationEvent event) -> {
                 if (event.getClass().getSimpleName().equals("DatabaseReadyEvent")) {
