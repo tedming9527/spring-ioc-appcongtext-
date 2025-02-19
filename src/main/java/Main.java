@@ -1,3 +1,5 @@
+// 移除包声明，因为该类位于默认包中
+
 import com.itranswarp.learnjava.service.UserService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
@@ -6,25 +8,39 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import java.util.Scanner;
 
 @Configuration
-@ComponentScan(basePackages = "com.itranswarp.learnjava.service")
+@ComponentScan(basePackages = "com.itranswarp.learnjava")
 @EnableAspectJAutoProxy
 public class Main {
+    
     public static void main(String[] args) {
-        System.out.println("应用程序已启动,main执行...");
-        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Main.class);
+        try (AnnotationConfigApplicationContext context = createApplicationContext();
              Scanner scanner = new Scanner(System.in)) {
-
-            System.out.println("应用程序已启动, 开始注册事件...");
-            // 等待数据库就绪事件
-            context.addApplicationListener((org.springframework.context.ApplicationEvent event) -> {
-                if (event.getClass().getSimpleName().equals("DatabaseReadyEvent")) {
-                    UserService userService = context.getBean(UserService.class);
-                    userService.login("anna", "password");
-                    System.out.println("应用程序已启动，按回车键退出...");
-                }
-            });
-
-            scanner.nextLine();
+            
+            startApplication(context);
+            waitForExit(scanner);
+            
+        } catch (Exception e) {
+            System.err.println("应用程序启动失败: " + e.getMessage());
+            System.exit(1);
         }
+    }
+    
+    private static AnnotationConfigApplicationContext createApplicationContext() {
+        return new AnnotationConfigApplicationContext(Main.class);
+    }
+    
+    private static void startApplication(AnnotationConfigApplicationContext context) {
+        try {
+            UserService userService = context.getBean(UserService.class);
+            userService.login("anna", "password");
+            System.out.println("应用程序已启动，按回车键退出...");
+        } catch (Exception e) {
+            throw new RuntimeException("用户登录失败: " + e.getMessage(), e);
+        }
+    }
+    
+    private static void waitForExit(Scanner scanner) {
+        scanner.nextLine();
+        System.out.println("应用程序已退出");
     }
 }

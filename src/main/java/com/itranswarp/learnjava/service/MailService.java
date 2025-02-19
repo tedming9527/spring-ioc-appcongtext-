@@ -1,4 +1,5 @@
 package com.itranswarp.learnjava.service;
+import com.itranswarp.learnjava.model.User;
 import org.springframework.stereotype.Component;
 
 @Component

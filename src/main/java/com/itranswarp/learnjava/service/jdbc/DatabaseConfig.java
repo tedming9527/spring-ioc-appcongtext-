@@ -1,4 +1,4 @@
-package com.itranswarp.learnjava.service;
+package com.itranswarp.learnjava.service.jdbc;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.transaction.PlatformTransactionManager;
 
 /**
  * 数据库配置类
@@ -17,13 +16,13 @@ import org.springframework.transaction.PlatformTransactionManager;
 @PropertySource("jdbc.properties")
 public class DatabaseConfig {
   // JDBC连接URL
-  @Value("jdbc.url")
+  @Value("${jdbc.url}")
   private String jdbcUrl;
   // 数据库用户名
-  @Value("jdbc.username")
+  @Value("${jdbc.username}")
   private String jdbcUsername;
   // 数据库密码
-  @Value("jdbc.password")
+  @Value("${jdbc.password}")
   private String jdbcPassword;
 
   /**

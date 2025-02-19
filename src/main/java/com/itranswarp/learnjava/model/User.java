@@ -1,4 +1,4 @@
-package com.itranswarp.learnjava.service;
+package com.itranswarp.learnjava.model;
 
 public class User {
   private long id;

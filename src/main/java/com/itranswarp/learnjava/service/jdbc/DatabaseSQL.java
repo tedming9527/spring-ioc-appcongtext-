@@ -1,4 +1,4 @@
-package com.itranswarp.learnjava.service;
+package com.itranswarp.learnjava.service.jdbc;
 
 public class DatabaseSQL {
 

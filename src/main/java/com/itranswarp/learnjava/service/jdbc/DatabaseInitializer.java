@@ -1,4 +1,4 @@
-package com.itranswarp.learnjava.service;
+package com.itranswarp.learnjava.service.jdbc;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +32,6 @@ public class DatabaseInitializer {
             } else {
                 System.out.println("表已存在且有数据，跳过初始化");
             }
-
-            // 发布数据库就绪事件
-            eventPublisher.publishEvent(new DatabaseReadyEvent(this));
-            System.out.println("数据库初始化完毕，触发事件");
         } catch (DataAccessException e) {
             throw new RuntimeException("数据库初始化失败", e);
         }
