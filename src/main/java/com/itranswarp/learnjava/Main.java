@@ -1,4 +1,4 @@
-// 移除包声明，因为该类位于默认包中
+package com.itranswarp.learnjava;// 移除包声明，因为该类位于默认包中
 
 import com.itranswarp.learnjava.service.UserService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;

@@ -1,4 +1,4 @@
-package com.itranswarp.learnjava.service.log;
+package com.itranswarp.learnjava.config;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

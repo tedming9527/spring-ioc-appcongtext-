@@ -1,4 +1,4 @@
-package com.itranswarp.learnjava.service.log;
+package com.itranswarp.learnjava.config;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
