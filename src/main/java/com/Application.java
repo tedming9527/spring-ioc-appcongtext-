@@ -1,4 +1,4 @@
-package com.itranswarp.learnjava;// 移除包声明，因为该类位于默认包中
+package com;// 移除包声明，因为该类位于默认包中
 
 import com.itranswarp.learnjava.service.UserService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -10,7 +10,7 @@ import java.util.Scanner;
 @Configuration
 @ComponentScan(basePackages = "com.itranswarp.learnjava")
 @EnableAspectJAutoProxy
-public class Main {
+public class Application {
     
     public static void main(String[] args) {
         try (AnnotationConfigApplicationContext context = createApplicationContext();
@@ -26,7 +26,7 @@ public class Main {
     }
     
     private static AnnotationConfigApplicationContext createApplicationContext() {
-        return new AnnotationConfigApplicationContext(Main.class);
+        return new AnnotationConfigApplicationContext(Application.class);
     }
     
     private static void startApplication(AnnotationConfigApplicationContext context) {

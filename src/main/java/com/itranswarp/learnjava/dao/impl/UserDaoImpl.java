@@ -1,5 +1,6 @@
-package com.itranswarp.learnjava.dao;
+package com.itranswarp.learnjava.dao.impl;
 
+import com.itranswarp.learnjava.dao.UserDao;
 import com.itranswarp.learnjava.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;

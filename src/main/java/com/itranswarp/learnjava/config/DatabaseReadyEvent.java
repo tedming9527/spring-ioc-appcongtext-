@@ -1,4 +1,4 @@
-package com.itranswarp.learnjava.service.jdbc;
+package com.itranswarp.learnjava.config;
 
 import org.springframework.context.ApplicationEvent;
 

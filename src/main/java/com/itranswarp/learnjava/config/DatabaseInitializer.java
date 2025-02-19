@@ -1,4 +1,4 @@
-package com.itranswarp.learnjava.service.jdbc;
+package com.itranswarp.learnjava.config;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;

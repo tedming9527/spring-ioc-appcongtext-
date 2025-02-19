@@ -2,7 +2,7 @@ package com.itranswarp.learnjava.service;
 
 import com.itranswarp.learnjava.dao.UserDao;
 import com.itranswarp.learnjava.model.User;
-import com.itranswarp.learnjava.config.Logging;
+import com.itranswarp.learnjava.aspect.Logging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
