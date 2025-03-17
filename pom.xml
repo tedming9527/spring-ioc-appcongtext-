@@ -58,7 +58,6 @@
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-core</artifactId>
       <version>6.6.8.Final</version>
-      <type>pom</type>
     </dependency>
 
     <!-- 添加 SLF4J API -->

@@ -1,6 +1,8 @@
 package com.itranswarp.learnjava.config;
 
 import jakarta.annotation.PostConstruct;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -12,21 +14,18 @@ public class DatabaseInitializer {
     private org.springframework.context.ApplicationEventPublisher eventPublisher;
 
     @Autowired
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private SessionFactory sessionFactory;
 
     @PostConstruct
     public void init() {
         try {
-            // 创建表
-            namedParameterJdbcTemplate.getJdbcTemplate().execute(DatabaseSQL.CREATE_USERS_TABLE);
-
             // 检查表中是否已有数据
-            Integer result = namedParameterJdbcTemplate.getJdbcTemplate()
-                    .queryForObject("SELECT COUNT(*) FROM users", Integer.class);
-            int count = result != null ? result : 0;
+            Query query = sessionFactory.getCurrentSession().createQuery("SELECT COUNT(*) FROM users");
+            long count = query.getResultCount();
 
             // 只有在表为空时才初始化数据
             if (count == 0) {
+                Query query = sessionFactory.getCurrentSession().createQuery("SELECT COUNT(*) FROM users");
                 namedParameterJdbcTemplate.getJdbcTemplate().execute(DatabaseSQL.INIT_USERS_DATA);
                 System.out.println("数据库初始化完成");
             } else {
