@@ -9,14 +9,17 @@ import org.hsqldb.jdbc.JDBCDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
+@ComponentScan
 @EnableTransactionManagement
 @PropertySource("jdbc.properties")
 public class AppConfig {
@@ -43,10 +46,12 @@ public class AppConfig {
 	@Bean
 	LocalSessionFactoryBean createSessionFactory(@Autowired DataSource dataSource) {
 		var props = new Properties();
-		props.setProperty("hibernate.hdm2ddl.auto", "update");
+		props.setProperty("hibernate.hbm2ddl.auto", "update");  // 修正属性名
 		props.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
 		props.setProperty("hibernate.show_sql", "true");
 		props.setProperty("hibernate.format_sql", "true");
+		props.setProperty("hibernate.current_session_context_class", "thread");  // 添加此行
+		
 		LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
 		sessionFactoryBean.setDataSource(dataSource);
 		sessionFactoryBean.setPackagesToScan("com.itranswarp.learnjava.entity");
@@ -58,5 +63,4 @@ public class AppConfig {
 	PlatformTransactionManager createTxManager(@Autowired SessionFactory sessionFactory) {
 		return new HibernateTransactionManager(sessionFactory);
 	}
-
 }
