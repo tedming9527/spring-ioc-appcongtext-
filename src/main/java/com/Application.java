@@ -5,11 +5,14 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
 import java.util.Scanner;
 
 @Configuration
 @ComponentScan(basePackages = "com.itranswarp.learnjava")
 @EnableAspectJAutoProxy
+@EnableTransactionManagement  // 添加此注解启用事务管理
 public class Application {
     
     public static void main(String[] args) {
@@ -32,7 +35,7 @@ public class Application {
     private static void startApplication(AnnotationConfigApplicationContext context) {
         try {
             UserService userService = context.getBean(UserService.class);
-            userService.login("anna", "password");
+            userService.login("anna@example.com", "password");
             System.out.println("应用程序已启动，按回车键退出...");
         } catch (Exception e) {
             throw new RuntimeException("用户登录失败: " + e.getMessage(), e);

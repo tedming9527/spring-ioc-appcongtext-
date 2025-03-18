@@ -9,17 +9,13 @@ import org.hsqldb.jdbc.JDBCDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@ComponentScan
 @EnableTransactionManagement
 @PropertySource("jdbc.properties")
 public class AppConfig {
@@ -46,11 +42,13 @@ public class AppConfig {
 	@Bean
 	LocalSessionFactoryBean createSessionFactory(@Autowired DataSource dataSource) {
 		var props = new Properties();
-		props.setProperty("hibernate.hbm2ddl.auto", "update");  // 修正属性名
+		props.setProperty("hibernate.hbm2ddl.auto", "update");
 		props.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
 		props.setProperty("hibernate.show_sql", "true");
 		props.setProperty("hibernate.format_sql", "true");
-		props.setProperty("hibernate.current_session_context_class", "thread");  // 添加此行
+		props.setProperty("hibernate.current_session_context_class","thread");
+		// 修改事务配置
+		// props.setProperty("hibernate.current_session_context_class", "org.springframework.orm.hibernate5.SpringSessionContext");
 		
 		LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
 		sessionFactoryBean.setDataSource(dataSource);
@@ -60,7 +58,9 @@ public class AppConfig {
 	}
 
 	@Bean
-	PlatformTransactionManager createTxManager(@Autowired SessionFactory sessionFactory) {
-		return new HibernateTransactionManager(sessionFactory);
+	HibernateTransactionManager createTxManager(@Autowired SessionFactory sessionFactory) {
+		HibernateTransactionManager transactionManager= new HibernateTransactionManager();
+		transactionManager.setSessionFactory(sessionFactory);
+		return transactionManager;
 	}
 }
