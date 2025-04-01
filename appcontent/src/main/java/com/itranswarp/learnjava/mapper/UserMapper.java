@@ -1,5 +1,6 @@
-package com.itranswarp.learnjava.model;
+package com.itranswarp.learnjava.mapper;
 
+import com.itranswarp.learnjava.model.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;

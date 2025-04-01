@@ -1,6 +1,7 @@
 package com.itranswarp.learnjava.service;
 
 import com.itranswarp.learnjava.dao.UserDao;
+import com.itranswarp.learnjava.mapper.UserMapper;
 import com.itranswarp.learnjava.model.User;
 import com.itranswarp.learnjava.aspect.Logging;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +16,14 @@ public class UserService {
     private static final int DEFAULT_PAGE_SIZE = 100;
     
     @Autowired
-    private UserDao userDao;
-    
+    UserMapper userMapper;
+
     @Autowired
     private MailService mailService;
 
     @Logging(value = "login")
     public void login(String name, String password) {
-        User user = userDao.getByNameAndPassword(name, password);
+        User user = userMapper.getById(id);
         if (user == null) {
             throw new RuntimeException("用户名或密码错误");
         }
