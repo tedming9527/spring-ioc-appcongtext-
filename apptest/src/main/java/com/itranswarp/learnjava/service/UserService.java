@@ -1,13 +1,24 @@
 package com.itranswarp.learnjava.service;
 
+import com.itranswarp.learnjava.aspect.MetricTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class UserService {
+  // 成员变量
+  public ZoneId zoneId = ZoneId.systemDefault();
+  public final void sayHi() {
+    System.err.println("hello world");
+  }
+  public UserService() {
+    System.out.println("UserService(): init...");
+    System.out.println("UserService(): zoneId = " + this.zoneId);
+  }
   @Autowired
   private MailService mailService;
   private List<User> users = new ArrayList<>(List.of(
@@ -15,6 +26,8 @@ public class UserService {
       new User(2, "alice@example.com", "password", "Alice"),
       new User(3, "tom@example.com", "password", "Tom")
   ));
+
+  @MetricTime(value = "alice")
   public User login(String email, String password) {
     for (User user: users) {
       if (user.getEmail().equalsIgnoreCase(email) && user.getPassword().equals(password)) {
