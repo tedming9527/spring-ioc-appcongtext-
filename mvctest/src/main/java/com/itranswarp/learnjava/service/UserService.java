@@ -12,6 +12,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import java.sql.Statement;
+import java.util.List;
 
 @Component
 public class UserService {
@@ -64,6 +65,9 @@ public class UserService {
     if (1 != jdbcTemplate.update("update user set name = ? where id = ?", user.getName(), user.getId())) {
       throw new RuntimeException("User not found by id");
     }
+  }
+  public List<User> getUsers() {
+    return jdbcTemplate.query("SELECT * FROM users", userRowMapper);
   }
 
 }

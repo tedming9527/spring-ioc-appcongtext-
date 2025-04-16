@@ -1,5 +1,7 @@
 package com.itranswarp.learnjava.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -31,6 +33,7 @@ public class User {
     this.email = email;
   }
 
+  @JsonIgnore
   public String getPassword() {
     return password;
   }

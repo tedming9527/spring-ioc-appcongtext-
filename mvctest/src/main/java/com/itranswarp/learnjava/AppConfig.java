@@ -13,23 +13,27 @@ import org.apache.catalina.webresources.DirResourceSet;
 import org.apache.catalina.webresources.StandardRoot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.MessageSource;
+import org.springframework.context.annotation.*;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
 import javax.sql.DataSource;
 import java.io.File;
+import java.util.Locale;
+import java.util.TimeZone;
 
 @Configuration
 @ComponentScan
+@EnableWebMvc
 @EnableTransactionManagement
 @PropertySource("classpath:jdbc.properties")
 public class AppConfig {
@@ -79,11 +83,26 @@ public class AppConfig {
   }
 
   @Bean
-  WebMvcConfigurer createWebMvcConfigurer() {
+  WebMvcConfigurer createWebMvcConfigurer(@Autowired HandlerInterceptor[] interceptors) {
     return new WebMvcConfigurer() {
       @Override
       public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**").addResourceLocations("/static/");
+      }
+
+      @Override
+      public void addInterceptors(InterceptorRegistry registry) {
+        for (var interceptor: interceptors) {
+          registry.addInterceptor(interceptor).addPathPatterns("/api/**");
+        }
+      }
+
+      @Override
+      public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/api/**")
+          .allowedOrigins("http://local.liaoxuefeng.com:8080")
+          .allowedMethods("GET", "POST")
+          .maxAge(3600);
       }
     };
   }
@@ -99,6 +118,22 @@ public class AppConfig {
     tomcat.start();
     tomcat.getServer().await();
 
+  }
+  @Primary
+  @Bean
+  LocaleResolver createLocaleResolver() {
+    var clr = new CookieLocaleResolver();
+    clr.setDefaultLocale(Locale.ENGLISH);
+    clr.setDefaultTimeZone(TimeZone.getDefault());
+    return clr;
+  }
+
+  @Bean("i18n")
+  MessageSource createMessageSource() {
+    var messageSource = new ResourceBundleMessageSource();
+    messageSource.setDefaultEncoding("UTF-8");
+    messageSource.setBasename("messages");
+    return messageSource;
   }
 
 }
